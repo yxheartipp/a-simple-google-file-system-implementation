@@ -1,0 +1,5 @@
+{
+    "clang-format.language.cpp.fallbackStyle": "${workspaceRoot}/.clang-format",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true
+}

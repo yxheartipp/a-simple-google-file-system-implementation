@@ -1,5 +1,6 @@
 {
     "clang-format.language.cpp.fallbackStyle": "${workspaceRoot}/.clang-format",
     "editor.formatOnPaste": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "clang-format.fallbackStyle": "(-fallback-sytle=Google)"
 }

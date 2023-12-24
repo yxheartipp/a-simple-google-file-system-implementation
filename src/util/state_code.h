@@ -1,17 +1,32 @@
 #ifndef gfs
 #define gfs
 
-#include <iostream>
+#include <cstdint>
+#include <string>
+#include <vector>
 
-enum state_code {
-  state_ok = 0,
-  state_err = 1,
-  state_file_not_found = 2,
-  state_file_chunk_index_err = 3,
-  state_length_err = 4,
+#include "iostream"
+#include "string.h"
+
+struct status_code {
+  int value;
+  std::string exception;
 };
 
-std::string debug_string(state_code c);
-std::string debug_string(int32_t c);
+struct gfs_config {
+  int chunk_size = 64;
+  std::vector<std::string> chunk_server_locations = {"50052", "50053", "50054",
+                                                     "50055", "50056"};
+  std::string chunk_server_root = "root_chunkserver";
+};
+
+struct PathInfo {
+  std::string Name;
+
+  bool IsDir;
+
+  uint64_t Length;
+  uint64_t Chunks;
+};
 
 #endif

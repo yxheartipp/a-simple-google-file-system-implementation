@@ -3,17 +3,21 @@
 #include <map>
 #include <memory>
 #include <mutex>
+#include <shared_mutex>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "state_code.h"
 
 namespace gfs {
-struct fileTreeNode;
+class fileTreeNode;
 typedef std::shared_ptr<fileTreeNode> fileTreeNodePtr;
 
-struct fileTreeNode {
-  std::mutex file_tree_mutex;
+class fileTreeNode {
+ public:
+  fileTreeNode(bool IsDir, uint64_t Chunks) : isDir(IsDir), chunks(Chunks) {}
+  std::shared_mutex file_tree_mutex;
 
   bool isDir;
   std::map<std::string, fileTreeNodePtr> children;
@@ -24,6 +28,7 @@ struct fileTreeNode {
 
 class serialFileNode {
  public:
+  serialFileNode(bool IsDir, uint64_t Chunks) : IsDir(IsDir), Chunks(Chunks) {}
   bool IsDir;
   std::map<std::string, int> Children;
   uint64_t Chunks;
@@ -31,7 +36,7 @@ class serialFileNode {
 
 class filemanager {
  public:
-  std::vector<fileTreeNodePtr> root;
+  fileTreeNodePtr root;
 
  public:
   filemanager();
@@ -42,7 +47,7 @@ class filemanager {
 
   fileTreeNodePtr array2tree(std::vector<serialFileNode> array, int id);
 
-  bool Deserialize(std::vector<serialFileNode> array);
+  void Deserialize(std::vector<serialFileNode> array);
 
   status_code lockParents(std::string path, bool goDown);
 
